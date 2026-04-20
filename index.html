@@ -700,6 +700,372 @@ footer{
   border-top:1px solid #ffffff04;
   position:relative;z-index:1;
 }
+
+/* ===== CHATBOT ===== */
+#chat-bubble{
+  position:fixed;bottom:90px;right:30px;
+  width:52px;height:52px;border-radius:50%;
+  background:linear-gradient(135deg,var(--cyan),var(--purple));
+  border:none;cursor:pointer;z-index:400;
+  font-size:22px;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 20px var(--purple)66;
+  transition:transform 0.3s,box-shadow 0.3s;
+  animation:pulseChat 2s ease-in-out infinite;
+}
+@keyframes pulseChat{0%,100%{box-shadow:0 0 20px var(--purple)66}50%{box-shadow:0 0 40px var(--cyan)99}}
+#chat-bubble:hover{transform:scale(1.15)}
+#chat-panel{
+  position:fixed;bottom:160px;right:30px;
+  width:300px;
+  background:var(--bg2);
+  border:1px solid var(--cyan)33;
+  border-radius:20px;
+  z-index:400;
+  display:none;flex-direction:column;
+  box-shadow:0 0 60px var(--purple)22;
+  overflow:hidden;
+}
+#chat-panel.open{display:flex}
+.chat-header{
+  background:linear-gradient(135deg,var(--bg3),var(--bg2));
+  padding:14px 18px;
+  display:flex;align-items:center;gap:10px;
+  border-bottom:1px solid var(--cyan)11;
+}
+.chat-avatar{font-size:22px}
+.chat-name{font-family:'Orbitron',monospace;font-size:12px;color:var(--cyan)}
+.chat-status{font-size:10px;color:#446655;letter-spacing:1px}
+.chat-close{margin-left:auto;background:none;border:none;color:#334455;cursor:pointer;font-size:16px}
+.chat-close:hover{color:var(--pink)}
+.chat-msgs{
+  flex:1;padding:16px;overflow-y:auto;
+  display:flex;flex-direction:column;gap:10px;
+  max-height:220px;min-height:120px;
+}
+.chat-msg{
+  max-width:85%;padding:10px 14px;
+  border-radius:14px;font-size:13px;line-height:1.5;
+  animation:msgPop 0.3s cubic-bezier(0.175,0.885,0.32,1.275);
+}
+@keyframes msgPop{from{opacity:0;transform:scale(0.8)}to{opacity:1;transform:scale(1)}}
+.chat-msg.bot{
+  background:var(--bg3);
+  border:1px solid var(--cyan)22;
+  color:#aabbcc;align-self:flex-start;
+  border-bottom-left-radius:4px;
+}
+.chat-msg.user{
+  background:linear-gradient(135deg,var(--purple)44,var(--cyan)22);
+  color:#fff;align-self:flex-end;
+  border-bottom-right-radius:4px;
+}
+.chat-typing{
+  display:flex;gap:4px;align-items:center;padding:10px 14px;
+}
+.typing-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--cyan);
+  animation:typingBounce 0.8s ease-in-out infinite;
+}
+.typing-dot:nth-child(2){animation-delay:0.15s}
+.typing-dot:nth-child(3){animation-delay:0.3s}
+@keyframes typingBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.chat-chips{
+  padding:8px 16px 12px;
+  display:flex;flex-wrap:wrap;gap:6px;
+}
+.chat-chip{
+  font-size:11px;font-family:'Share Tech Mono',monospace;
+  background:var(--bg3);border:1px solid var(--purple)33;
+  color:#7b61ff;padding:5px 10px;border-radius:20px;
+  cursor:pointer;transition:all 0.2s;
+}
+.chat-chip:hover{background:var(--purple)22;border-color:var(--purple)}
+
+/* ===== ACHIEVEMENTS / CLICK COUNTER ===== */
+#achieve-bar{
+  position:fixed;top:60px;left:0;right:0;
+  z-index:150;
+  display:flex;justify-content:center;
+  pointer-events:none;
+}
+.achieve-toast{
+  background:linear-gradient(135deg,var(--yellow)dd,var(--pink)dd);
+  color:#04080f;
+  font-family:'Orbitron',monospace;
+  font-size:12px;font-weight:700;letter-spacing:1px;
+  padding:10px 20px;border-radius:50px;
+  box-shadow:0 0 30px var(--yellow)66;
+  transform:translateY(-60px);
+  transition:transform 0.5s cubic-bezier(0.175,0.885,0.32,1.275);
+  pointer-events:auto;
+}
+.achieve-toast.show{transform:translateY(0)}
+
+/* ===== SECRET CORNER ===== */
+#corner-secret{
+  position:fixed;bottom:0;left:0;
+  width:40px;height:40px;
+  z-index:500;cursor:pointer;
+  opacity:0;
+}
+#corner-secret:hover{opacity:0.01}
+
+/* ===== HACKERMAN OVERLAY ===== */
+#hackerman{
+  position:fixed;inset:0;z-index:600;
+  background:#000;
+  display:none;
+  flex-direction:column;
+  align-items:center;justify-content:center;
+  font-family:'Share Tech Mono',monospace;
+  overflow:hidden;
+}
+#hackerman.show{display:flex}
+#hack-canvas{position:absolute;inset:0;opacity:0.3}
+.hack-content{position:relative;z-index:1;text-align:center;padding:40px}
+.hack-title{
+  font-family:'Orbitron',monospace;
+  font-size:clamp(20px,5vw,50px);font-weight:900;
+  color:#00ff44;
+  text-shadow:0 0 30px #00ff44;
+  margin-bottom:16px;
+  letter-spacing:4px;
+}
+.hack-text{color:#00aa33;font-size:14px;line-height:2;margin-bottom:30px;max-width:400px}
+#hack-close{
+  background:transparent;border:1px solid #00ff4444;
+  color:#00ff44;font-family:'Orbitron',monospace;font-size:12px;
+  padding:12px 28px;border-radius:50px;cursor:pointer;
+  transition:all 0.3s;
+}
+#hack-close:hover{background:#00ff4411;box-shadow:0 0 20px #00ff4433}
+
+/* ===== SECRET CODE INPUT ===== */
+#code-input-wrap{
+  position:fixed;bottom:0;left:0;right:0;
+  height:3px;z-index:500;
+  overflow:visible;
+}
+#secret-input{
+  position:absolute;bottom:0;left:50%;transform:translateX(-50%);
+  width:0;height:0;opacity:0;border:none;background:none;
+  color:transparent;caret-color:transparent;
+  font-size:1px;
+}
+
+/* ===== RIPPLE EFFECT ===== */
+.ripple{
+  position:fixed;border-radius:50%;
+  pointer-events:none;z-index:60;
+  border:2px solid var(--cyan);
+  animation:rippleAnim 0.8s ease-out forwards;
+}
+@keyframes rippleAnim{
+  from{width:0;height:0;opacity:0.8;transform:translate(-50%,-50%)}
+  to{width:200px;height:200px;opacity:0;transform:translate(-50%,-50%)}
+}
+
+/* ===== TILT CARD EFFECT ===== */
+.tilt-wrap{perspective:800px}
+.wish-card{transform-style:preserve-3d}
+
+/* ===== NYAN CAT ===== */
+#nyan{
+  position:fixed;bottom:-60px;left:-120px;
+  font-size:40px;z-index:500;
+  pointer-events:none;
+  transition:none;
+  white-space:nowrap;
+}
+#nyan.fly{
+  animation:nyanFly 3s linear forwards;
+}
+@keyframes nyanFly{
+  0%{bottom:30vh;left:-150px}
+  100%{bottom:30vh;left:calc(100vw + 150px)}
+}
+#nyan-trail{
+  position:fixed;z-index:499;
+  pointer-events:none;
+  height:20px;
+  bottom:calc(30vh + 10px);
+  left:0;
+  background:linear-gradient(90deg,transparent,#ff6b9d,#ffd166,#06d6a0,#00ffe7,#7b61ff);
+  width:0;
+  opacity:0;
+}
+#nyan-trail.fly{animation:trailFly 3s linear forwards}
+@keyframes trailFly{
+  0%{width:0;opacity:1;left:-150px}
+  100%{width:80vw;opacity:0.6;left:0}
+}
+
+/* ===== DARK MODE TOGGLE (actually RAVE mode) ===== */
+#rave-btn{
+  position:fixed;top:50%;right:0;
+  transform:translateY(-50%);
+  background:var(--bg2);border:1px solid #1a2a44;
+  color:#334455;
+  writing-mode:vertical-rl;
+  font-family:'Share Tech Mono',monospace;
+  font-size:10px;letter-spacing:2px;
+  padding:14px 8px;cursor:pointer;
+  border-radius:8px 0 0 8px;
+  z-index:100;transition:all 0.3s;
+}
+#rave-btn:hover{color:var(--cyan);border-color:var(--cyan)44}
+
+body.rave-mode{
+  animation:raveColors 0.5s steps(1) infinite;
+}
+@keyframes raveColors{
+  0%{filter:hue-rotate(0deg) brightness(1.2)}
+  25%{filter:hue-rotate(90deg) brightness(1.3)}
+  50%{filter:hue-rotate(180deg) brightness(1.2)}
+  75%{filter:hue-rotate(270deg) brightness(1.3)}
+  100%{filter:hue-rotate(360deg) brightness(1.2)}
+}
+
+/* ===== SNAKE GAME ===== */
+#snake-overlay{
+  position:fixed;inset:0;z-index:700;
+  background:rgba(4,8,15,0.97);
+  display:none;flex-direction:column;
+  align-items:center;justify-content:center;
+  gap:16px;
+}
+#snake-overlay.show{display:flex}
+#snake-title{
+  font-family:'Orbitron',monospace;font-size:24px;font-weight:900;
+  background:linear-gradient(135deg,var(--cyan),var(--purple));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+#snake-canvas{
+  border:1px solid var(--cyan)44;border-radius:8px;
+  display:block;
+}
+#snake-score-display{
+  font-family:'Share Tech Mono',monospace;font-size:14px;
+  color:var(--cyan);letter-spacing:2px;
+}
+#snake-close{
+  font-family:'Orbitron',monospace;font-size:11px;
+  background:transparent;border:1px solid var(--pink)44;
+  color:var(--pink);padding:10px 24px;border-radius:50px;cursor:pointer;
+  transition:all 0.3s;margin-top:8px;
+}
+#snake-close:hover{background:var(--pink)11;border-color:var(--pink)}
+
+/* ===== LAVA LAMP / BLOB ===== */
+#blob-canvas{
+  position:fixed;inset:0;z-index:0;
+  pointer-events:none;opacity:0;
+  transition:opacity 1s;
+}
+#blob-canvas.show{opacity:0.15}
+
+/* ===== CLICK BOMB ===== */
+.click-bomb{
+  position:fixed;z-index:55;
+  font-size:28px;pointer-events:none;
+  animation:bombFloat 2s ease-out forwards;
+}
+@keyframes bombFloat{
+  0%{opacity:1;transform:scale(1) translateY(0)}
+  100%{opacity:0;transform:scale(0.5) translateY(-120px)}
+}
+
+/* ===== CURSOR TRAIL STARS ===== */
+.cursor-star{
+  position:fixed;pointer-events:none;z-index:9990;
+  font-size:14px;
+  animation:starFade 0.8s ease-out forwards;
+}
+@keyframes starFade{
+  0%{opacity:1;transform:scale(1) translate(-50%,-50%)}
+  100%{opacity:0;transform:scale(0.3) translate(-50%,-180%)}
+}
+
+/* ===== SCREENSAVER ===== */
+#screensaver{
+  position:fixed;inset:0;z-index:800;
+  background:#000;
+  display:none;
+  cursor:none;
+  overflow:hidden;
+}
+#screensaver.show{display:block}
+#ss-canvas{width:100%;height:100%}
+#ss-hint{
+  position:absolute;bottom:20px;left:50%;transform:translateX(-50%);
+  font-family:'Share Tech Mono',monospace;font-size:11px;
+  color:#1a2a3a;letter-spacing:3px;
+}
+
+/* ===== SECRET HINT WHISPER ===== */
+#whisper{
+  position:fixed;bottom:70px;left:50%;transform:translateX(-50%);
+  font-family:'Share Tech Mono',monospace;font-size:10px;
+  color:#0d1f33;letter-spacing:2px;
+  z-index:100;pointer-events:none;
+  transition:color 2s;white-space:nowrap;
+}
+#whisper.visible{color:#1a3344}
+
+/* ===== SHAKE INPUT ===== */
+@keyframes inputShake{
+  0%,100%{transform:translateX(-50%)}
+  20%{transform:translateX(calc(-50% - 6px))}
+  40%{transform:translateX(calc(-50% + 6px))}
+  60%{transform:translateX(calc(-50% - 4px))}
+  80%{transform:translateX(calc(-50% + 4px))}
+}
+
+/* ===== EMOJI RAIN ===== */
+.emoji-rain-drop{
+  position:fixed;top:-50px;z-index:52;
+  font-size:24px;pointer-events:none;
+  animation:rainDrop var(--spd) linear forwards;
+}
+@keyframes rainDrop{
+  to{top:110vh;transform:rotate(720deg)}
+}
+
+/* ===== GLITCH CURSOR MODE ===== */
+body.glitch-cursor #cursor{
+  animation:cursorGlitch 0.1s steps(1) infinite;
+}
+@keyframes cursorGlitch{
+  0%{background:var(--cyan);box-shadow:0 0 20px var(--cyan)}
+  33%{background:var(--pink);box-shadow:0 0 20px var(--pink);transform:translate(4px,-3px) scale(1.5)}
+  66%{background:var(--yellow);box-shadow:0 0 20px var(--yellow);transform:translate(-3px,4px) scale(0.7)}
+}
+
+/* ===== DARK SECRET ===== */
+#dark-msg{
+  position:fixed;inset:0;z-index:900;
+  display:none;align-items:center;justify-content:center;
+  background:#000;
+}
+#dark-msg.show{display:flex}
+#dark-msg-inner{
+  text-align:center;padding:40px;
+  animation:darkmsgIn 0.5s ease-out;
+}
+@keyframes darkmsgIn{from{opacity:0;transform:scale(0.8)}to{opacity:1;transform:scale(1)}}
+#dark-msg-inner h2{
+  font-family:'Orbitron',monospace;font-size:clamp(18px,5vw,48px);
+  color:#fff;font-weight:900;margin-bottom:16px;
+}
+#dark-msg-inner p{color:#556;font-size:14px;line-height:2;max-width:400px;margin:0 auto 30px}
+#dark-msg-close{
+  background:none;border:1px solid #333;color:#666;
+  font-family:'Orbitron',monospace;font-size:11px;
+  padding:10px 24px;border-radius:50px;cursor:pointer;
+}
+#dark-msg-close:hover{color:#fff;border-color:#666}
 </style>
 </head>
 <body>
@@ -707,6 +1073,91 @@ footer{
 <!-- Custom cursor -->
 <div id="cursor"></div>
 <div id="cursor-trail"></div>
+
+<!-- Chatbot -->
+<button id="chat-bubble" onclick="toggleChat()">🤖</button>
+<div id="chat-panel">
+  <div class="chat-header">
+    <span class="chat-avatar">🤖</span>
+    <div>
+      <div class="chat-name">ШКМ-БОТ v2.0</div>
+      <div class="chat-status">● ONLINE — завжди готовий</div>
+    </div>
+    <button class="chat-close" onclick="toggleChat()">✕</button>
+  </div>
+  <div class="chat-msgs" id="chat-msgs">
+    <div class="chat-msg bot">Привіт! Я ШКМ-Бот. Запитай мене про школу! 🎓</div>
+  </div>
+  <div class="chat-chips" id="chat-chips">
+    <span class="chat-chip" onclick="chatAsk('Скільки років ШКМ?')">📅 Вік школи</span>
+    <span class="chat-chip" onclick="chatAsk('Секрет сайту?')">🔐 Секрет</span>
+    <span class="chat-chip" onclick="chatAsk('Запусти феєрверк!')">🎆 Феєрверк</span>
+    <span class="chat-chip" onclick="chatAsk('Що таке ШКМ?')">🏫 Що таке ШКМ</span>
+  </div>
+</div>
+
+<!-- Achievement bar -->
+<div id="achieve-bar">
+  <div class="achieve-toast" id="achieve-toast">🏆 ДОСЯГНЕННЯ РОЗБЛОКОВАНО!</div>
+</div>
+
+<!-- Hackerman overlay (secret) -->
+<div id="hackerman">
+  <canvas id="hack-canvas"></canvas>
+  <div class="hack-content">
+    <div class="hack-title">// HACKERMAN MODE //</div>
+    <div class="hack-text">
+      ACCESS GRANTED ✅<br>
+      Ласкаво просимо, справжній хакер ШКМ!<br>
+      Ти ввів секретний код і отримав доступ<br>
+      до прихованої частини системи 🔓<br><br>
+      <span style="color:#00ff44;font-size:20px">РІВЕНЬ: ELITE CODER</span>
+    </div>
+    <button id="hack-close" onclick="closeHackerman()">// ВИЙТИ З СИСТЕМИ //</button>
+  </div>
+</div>
+
+<!-- Secret corner click zone -->
+<div id="corner-secret" onclick="cornerClick()"></div>
+
+<!-- Rave mode button -->
+<button id="rave-btn" onclick="toggleRave()">RAVE MODE</button>
+
+<!-- Nyan cat -->
+<div id="nyan">🐱 ~~~</div>
+<div id="nyan-trail"></div>
+
+<!-- SNAKE GAME (secret) -->
+<div id="snake-overlay">
+  <div id="snake-title">🐍 SNAKE // ШКМ EDITION</div>
+  <div id="snake-score-display">SCORE: <span id="snake-score">0</span> &nbsp;|&nbsp; BEST: <span id="snake-best">0</span></div>
+  <canvas id="snake-canvas" width="400" height="400"></canvas>
+  <div style="font-family:'Share Tech Mono',monospace;font-size:11px;color:#334455;letter-spacing:2px">WASD або СТРІЛКИ для руху</div>
+  <button id="snake-close" onclick="closeSnake()">✕ ВИЙТИ З ГРИ</button>
+</div>
+
+<!-- Screensaver -->
+<div id="screensaver">
+  <canvas id="ss-canvas"></canvas>
+  <div id="ss-hint">// НАТИСНИ БУДЬ-ЯКУ КЛАВІШУ //</div>
+</div>
+
+<!-- Secret whisper -->
+<div id="whisper">// підказка: ↑↑↓↓←→←→ B A • шкм • 3× кут • 5× logo //</div>
+
+<!-- Dark secret overlay -->
+<div id="dark-msg">
+  <div id="dark-msg-inner">
+    <div style="font-size:80px;margin-bottom:20px">🌑</div>
+    <h2>ТИ ЗНАЙШОВ ТЕМНИЙ БІК</h2>
+    <p>Ти провів у темряві достатньо часу...<br>Але навіть тут є код.<br>І навіть тут — ШКМ з тобою.</p>
+    <div style="font-family:'Share Tech Mono',monospace;font-size:13px;color:#00ff44;margin-bottom:24px">console.log("darkness.exe → hope.js")</div>
+    <button id="dark-msg-close" onclick="closeDarkMsg()">← ПОВЕРНУТИСЬ ДО СВІТЛА</button>
+  </div>
+</div>
+
+<!-- Blob canvas (lava lamp bg) -->
+<canvas id="blob-canvas"></canvas>
 
 <!-- Progress bar -->
 <div id="progress-bar"></div>
@@ -760,6 +1211,8 @@ footer{
     <button class="btn-primary" onclick="launchMegaFirework()">🎆 ФЕЄРВЕРК!</button>
     <button class="btn-ghost" onclick="playBday()">🎵 Музика свята</button>
     <button class="btn-ghost" onclick="triggerGlitch()">⚡ ГЛІТЧ!</button>
+    <button class="btn-ghost" onclick="launchNyan()">🐱 НЯН!</button>
+    <button class="btn-ghost" onclick="emojiRain()">🌧️ EMOJI!</button>
   </div>
 
   <div class="scroll-hint">
@@ -960,14 +1413,81 @@ footer{
 
   <div class="heart-beats">💜</div>
 
-  <div style="margin-top:40px">
+  <div style="margin-top:40px;display:flex;gap:16px;flex-wrap:wrap;justify-content:center">
     <button class="btn-primary" onclick="launchMegaFirework()">🎆 ОСТАННІЙ ФЕЄРВЕРК!</button>
+    <button class="btn-ghost" onclick="openSnake()">🐍 ЗІГРАЙ В SNAKE</button>
   </div>
 </section>
 
 <footer>
   ШКМ — ШКОЛА КОМПʼЮТЕРНОЇ МАЙСТЕРНОСТІ &nbsp;•&nbsp; &lt;/&gt; З КОДОМ У СЕРЦІ &nbsp;•&nbsp; MADE WITH 💜
+  <br><span id="secrets-btn" onclick="openSecrets()" title="Всі секрети сайту">// easter eggs //</span>
 </footer>
+
+<!-- SECRETS GUIDE MODAL -->
+<div id="secrets-modal" style="display:none;position:fixed;inset:0;z-index:1000;background:rgba(4,8,15,0.96);overflow-y:auto;padding:40px 20px;">
+  <div style="max-width:640px;margin:0 auto;position:relative">
+    <button onclick="closeSecrets()" style="position:sticky;top:0;float:right;background:transparent;border:1px solid #334455;color:#445566;font-family:'Share Tech Mono',monospace;font-size:11px;padding:8px 18px;border-radius:50px;cursor:pointer;margin-bottom:20px;transition:all 0.2s" onmouseover="this.style.color='#ff6b9d';this.style.borderColor='#ff6b9d'" onmouseout="this.style.color='#445566';this.style.borderColor='#334455'">✕ ЗАКРИТИ</button>
+    <div style="clear:both"></div>
+    <div style="font-family:'Orbitron',monospace;font-size:11px;letter-spacing:4px;color:#223344;margin-bottom:12px;text-transform:uppercase">// знайшов секрет //</div>
+    <h2 style="font-family:'Orbitron',monospace;font-size:clamp(22px,5vw,36px);font-weight:900;background:linear-gradient(135deg,#00ffe7,#7b61ff,#ff6b9d);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px">Гід по Easter Eggs</h2>
+    <p style="font-family:'Share Tech Mono',monospace;font-size:12px;color:#334455;letter-spacing:2px;margin-bottom:36px">ВСЬОГО СХОВАНОК: <span style="color:#00ffe7">14</span></p>
+
+    <div id="secrets-list"></div>
+
+    <div style="margin-top:40px;text-align:center;font-family:'Share Tech Mono',monospace;font-size:11px;color:#1a2a3a;letter-spacing:2px;line-height:2">
+      // тепер ти знаєш все. або майже все... //<br>
+      <span style="color:#7b61ff44">зроблено з 💜 для ШКМ</span>
+    </div>
+  </div>
+</div>
+
+<style>
+#secrets-btn{
+  display:inline-block;
+  margin-top:16px;
+  font-family:'Share Tech Mono',monospace;
+  font-size:11px;
+  color:#2a3f55;
+  cursor:pointer;
+  letter-spacing:3px;
+  transition:color 0.3s, text-shadow 0.3s, border-color 0.3s;
+  user-select:none;
+  border:1px solid #1a2d40;
+  border-radius:50px;
+  padding:8px 18px;
+  text-transform:uppercase;
+}
+#secrets-btn:hover{
+  color:#00ffe7;
+  border-color:#00ffe744;
+  text-shadow:0 0 12px #00ffe766;
+}
+.secret-item{
+  display:flex;gap:16px;align-items:flex-start;
+  padding:16px 0;
+  border-bottom:1px solid #0d1626;
+  animation:fadeInUp 0.4s ease both;
+}
+.secret-item:last-child{border-bottom:none}
+.secret-icon{
+  font-size:28px;flex-shrink:0;width:44px;text-align:center;
+  filter:drop-shadow(0 0 6px currentColor);
+}
+.secret-info{}
+.secret-name{
+  font-family:'Orbitron',monospace;font-size:13px;font-weight:700;
+  color:#fff;margin-bottom:4px;letter-spacing:1px;
+}
+.secret-how{
+  font-family:'Share Tech Mono',monospace;font-size:11px;
+  color:#00ffe7;background:#00ffe711;
+  border:1px solid #00ffe722;
+  border-radius:6px;padding:4px 10px;
+  display:inline-block;margin-bottom:4px;letter-spacing:1px;
+}
+.secret-desc{font-size:12px;color:#445566;line-height:1.6}
+</style>
 
 <script>
 // ===== CURSOR =====
@@ -1388,7 +1908,542 @@ document.getElementById('hero-logo').addEventListener('click',()=>{
   burst(BW/2,BH/3,true);
   spawnConfetti(30);
   showNotif('✨ Клікнув на логотип ШКМ!');
+  trackClick('logo');
 });
+
+// ===== RIPPLE ON CLICK =====
+document.addEventListener('click',e=>{
+  const r=document.createElement('div');
+  r.className='ripple';
+  r.style.cssText=`left:${e.clientX}px;top:${e.clientY}px`;
+  document.body.appendChild(r);
+  setTimeout(()=>r.remove(),900);
+});
+
+// ===== CHATBOT =====
+const chatBotReplies={
+  'скільки років шкм':['ШКМ вже 24 роки! 🎂 Це ціла епоха в IT-освіті! Уяви скільки рядків коду за цей час!','24 роки — і кожен рік крутіший за попередній. Школа постійно оновлюється як хороший software! 🔄'],
+  'секрет':['Секретів тут багато 😏 Спробуй: Konami code (↑↑↓↓←→←→BA), натисни в лівий нижній кут екрана, введи "шкм" на клавіатурі... і це ще не все 🔐','Хочеш секрет? Введи "шкм" з клавіатури коли відкрита ця сторінка... 👀'],
+  'феєрверк':['БАБАХ! 🎆','Запускаємо! 🚀'],
+  'що таке шкм':['ШКМ — Школа Комп\'ютерної Майстерності! 🏫 Тут навчають програмуванню, робототехніці, веб-розробці та всьому, що пов\'язано з IT! 💻','ШКМ — це місце, де мрії перетворюються на код, а код — на реальність! 🌟 Python, JS, HTML, роботи — все тут!'],
+  'привіт':['Привіт! Радий тебе бачити! 👋 Чим можу допомогти?','Вітаю, кодере! 🤖 Готовий до нових знань?'],
+  'default':['Гарне питання! 🤔 Але це поза моїми можливостями... Спробуй щось інше!','Хм, не зовсім розумію. Але знаю точно — ШКМ найкраща! 🏆','ERROR 404: Відповідь не знайдена 😄 Але ШКМ — топ!']
+};
+
+let chatOpen=false;
+window.toggleChat=function(){
+  chatOpen=!chatOpen;
+  document.getElementById('chat-panel').classList.toggle('open',chatOpen);
+  if(chatOpen)showNotif('🤖 ШКМ-Бот готовий до спілкування!');
+};
+
+window.chatAsk=function(question){
+  const msgs=document.getElementById('chat-msgs');
+  // Add user message
+  const um=document.createElement('div');
+  um.className='chat-msg user';um.textContent=question;
+  msgs.appendChild(um);
+  // Show typing
+  const td=document.createElement('div');
+  td.className='chat-msg bot chat-typing';
+  td.innerHTML='<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
+  msgs.appendChild(td);
+  msgs.scrollTop=msgs.scrollHeight;
+  // Handle fireworks
+  if(question.includes('феєрверк')){
+    setTimeout(()=>{launchMegaFirework();},600);
+  }
+  // Reply after delay
+  setTimeout(()=>{
+    td.remove();
+    const key=Object.keys(chatBotReplies).find(k=>question.toLowerCase().includes(k));
+    const replies=chatBotReplies[key||'default'];
+    const reply=replies[Math.floor(Math.random()*replies.length)];
+    const bm=document.createElement('div');
+    bm.className='chat-msg bot';bm.textContent=reply;
+    msgs.appendChild(bm);
+    msgs.scrollTop=msgs.scrollHeight;
+  },800+Math.random()*600);
+};
+
+// ===== ACHIEVEMENT SYSTEM =====
+let clickCount=0;
+const achievements=[
+  {at:1,msg:'🖱️ ПЕРШИЙ КЛІК — Подорож почалась!'},
+  {at:10,msg:'🔥 10 КЛІКІВ — Не можеш зупинитись!'},
+  {at:25,msg:'⚡ 25 КЛІКІВ — Справжній клікер!'},
+  {at:50,msg:'💎 50 КЛІКІВ — LEGENDARY CLICKER!'},
+  {at:100,msg:'👑 100 КЛІКІВ — ШКМ CHAMPION!'},
+];
+let unlockedAchieves=new Set();
+
+function trackClick(source){
+  clickCount++;
+  achievements.forEach(a=>{
+    if(clickCount>=a.at&&!unlockedAchieves.has(a.at)){
+      unlockedAchieves.add(a.at);
+      setTimeout(()=>showAchieve(a.msg),300);
+    }
+  });
+}
+
+document.addEventListener('click',()=>trackClick('page'));
+
+function showAchieve(msg){
+  const t=document.getElementById('achieve-toast');
+  t.textContent=msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+// ===== SECRET CORNER =====
+let cornerClicks=0;
+window.cornerClick=function(){
+  cornerClicks++;
+  if(cornerClicks>=3){
+    cornerClicks=0;
+    openHackerman();
+  } else {
+    showNotif(`🔲 Ще ${3-cornerClicks} кліків...`);
+  }
+};
+
+// ===== HACKERMAN =====
+function openHackerman(){
+  document.getElementById('hackerman').classList.add('show');
+  // green matrix on hack canvas
+  const hc=document.getElementById('hack-canvas');
+  hc.width=window.innerWidth;hc.height=window.innerHeight;
+  const hx=hc.getContext('2d');
+  const hcols=Math.floor(hc.width/14);
+  const hdrops=new Array(hcols).fill(1);
+  const hackInterval=setInterval(()=>{
+    hx.fillStyle='rgba(0,0,0,0.05)';hx.fillRect(0,0,hc.width,hc.height);
+    hx.font='13px Share Tech Mono,monospace';
+    hdrops.forEach((y,i)=>{
+      const ch='01アカシスタ<>/\\[]{}ШКМ'[Math.floor(Math.random()*18)];
+      hx.fillStyle=y*14<30?'#00ff44':y*14<80?'#00aa33':'#006622';
+      hx.fillText(ch,i*14,y*14);
+      if(y*14>hc.height&&Math.random()>.97)hdrops[i]=0;
+      hdrops[i]++;
+    });
+  },50);
+  document.getElementById('hack-canvas').dataset.interval=hackInterval;
+  showNotif('🔓 HACKERMAN MODE ACTIVATED!');
+  spawnConfetti(40);
+}
+
+window.closeHackerman=function(){
+  document.getElementById('hackerman').classList.remove('show');
+  clearInterval(+document.getElementById('hack-canvas').dataset.interval);
+};
+
+// ===== NYAN CAT =====
+let nyanRunning=false;
+window.launchNyan=function(){
+  if(nyanRunning)return;
+  nyanRunning=true;
+  const n=document.getElementById('nyan');
+  const trail=document.getElementById('nyan-trail');
+  n.classList.add('fly');
+  trail.classList.add('fly');
+  showNotif('🐱 НЯН-КЕТ ПОЛЬОТІ!');
+  setTimeout(()=>{
+    n.classList.remove('fly');
+    trail.classList.remove('fly');
+    nyanRunning=false;
+  },3100);
+};
+
+// ===== RAVE MODE =====
+let raveOn=false;
+window.toggleRave=function(){
+  raveOn=!raveOn;
+  document.body.classList.toggle('rave-mode',raveOn);
+  document.getElementById('rave-btn').style.color=raveOn?'var(--yellow)':'';
+  showNotif(raveOn?'🎉 RAVE MODE: ON — PARTY!':'🎉 RAVE MODE: OFF');
+  if(raveOn)spawnConfetti(20);
+};
+
+// ===== SECRET CODE: type "шкм" =====
+let typedSecret='';
+document.addEventListener('keydown',e=>{
+  typedSecret+=e.key.toLowerCase();
+  if(typedSecret.length>6)typedSecret=typedSecret.slice(-6);
+  if(typedSecret.includes('шкм')){
+    typedSecret='';
+    secretCodeActivate();
+  }
+});
+
+function secretCodeActivate(){
+  showNotif('💥 СЕКРЕТНИЙ КОД: ШКМ!');
+  burst(BW/2,BH/2,true);burst(BW/4,BH/3,true);burst(3*BW/4,BH/3,true);
+  spawnConfetti(80);
+  document.body.classList.add('shake');
+  setTimeout(()=>document.body.classList.remove('shake'),500);
+  showAchieve('🔑 SECRET CODE "ШКМ" — ЛЕГЕНДА!');
+}
+
+// ===== 3D TILT ON WISH CARDS =====
+document.querySelectorAll('.wish-card').forEach(card=>{
+  card.addEventListener('mousemove',e=>{
+    const r=card.getBoundingClientRect();
+    const x=(e.clientX-r.left)/r.width-0.5;
+    const y=(e.clientY-r.top)/r.height-0.5;
+    card.style.transform=`translateY(-10px) rotateY(${x*20}deg) rotateX(${-y*20}deg)`;
+  });
+  card.addEventListener('mouseleave',()=>{
+    card.style.transform='';
+  });
+});
+
+// ===== DOUBLE-CLICK LOGO: SUPER BURST =====
+document.getElementById('hero-logo').addEventListener('dblclick',()=>{
+  for(let i=0;i<12;i++) setTimeout(()=>burst(Math.random()*BW,Math.random()*BH*.6,true),i*150);
+  spawnConfetti(100);
+  showAchieve('💥 ПОДВІЙНИЙ КЛІК — СУПЕР ФЕЄРВЕРК!');
+  launchNyan();
+});
+
+// ===== EASTER EGG: click logo 5 times =====
+let logoBonks=0;
+document.getElementById('hero-logo').addEventListener('click',()=>{
+  logoBonks++;
+  if(logoBonks===5){
+    logoBonks=0;
+    showAchieve('🎯 5 КЛІКІВ НА ЛОГОТИП — МАЙСТЕР!');
+    toggleRave();
+    setTimeout(()=>toggleRave(),4000);
+  }
+});
+
+// ===== CURSOR TRAIL STARS =====
+const starEmojis=['✨','⭐','💫','🌟','★','·'];
+let lastStarTime=0;
+document.addEventListener('mousemove',e=>{
+  const now=Date.now();
+  if(now-lastStarTime<80)return;
+  lastStarTime=now;
+  if(Math.random()>0.4)return;
+  const s=document.createElement('div');
+  s.className='cursor-star';
+  s.textContent=starEmojis[Math.floor(Math.random()*starEmojis.length)];
+  s.style.left=e.clientX+'px';s.style.top=e.clientY+'px';
+  document.body.appendChild(s);
+  setTimeout(()=>s.remove(),900);
+});
+
+// ===== EMOJI RAIN =====
+const rainEmojis=['🎉','🎊','💻','⭐','🔥','💜','🚀','💎','🎂','🏆','⚡','🌟'];
+window.emojiRain=function(){
+  for(let i=0;i<40;i++){
+    setTimeout(()=>{
+      const d=document.createElement('div');
+      d.className='emoji-rain-drop';
+      d.textContent=rainEmojis[Math.floor(Math.random()*rainEmojis.length)];
+      d.style.cssText=`left:${Math.random()*100}vw;--spd:${1.5+Math.random()*2.5}s;font-size:${18+Math.random()*20}px`;
+      document.body.appendChild(d);
+      setTimeout(()=>d.remove(),4000);
+    },i*60);
+  }
+  showNotif('🌧️ EMOJI ДОЩ!');
+  showAchieve('🌈 EMOJI STORM — ЦЕ ВАУ!');
+};
+
+// ===== CLICK BOMBS (random floating words on click) =====
+const bombWords=['БУМ!','КУЛ!','ВАУ!','ТОП!','❤️','🔥','++','WIN!','АЙ!','ОГО!','ЙО!','💥'];
+document.addEventListener('click',e=>{
+  if(Math.random()>0.3)return;
+  const b=document.createElement('div');
+  b.className='click-bomb';
+  b.textContent=bombWords[Math.floor(Math.random()*bombWords.length)];
+  b.style.cssText=`left:${e.clientX-20}px;top:${e.clientY-20}px;color:${['#00ffe7','#ff6b9d','#ffd166','#7b61ff'][Math.floor(Math.random()*4)]};font-family:Orbitron,monospace;font-weight:900`;
+  document.body.appendChild(b);
+  setTimeout(()=>b.remove(),2000);
+});
+
+// ===== SNAKE GAME =====
+let snakeGame=null,snakeBest=0;
+window.openSnake=function(){
+  document.getElementById('snake-overlay').classList.add('show');
+  startSnake();
+  showNotif('🐍 Snake запущено! WASD для руху');
+};
+window.closeSnake=function(){
+  document.getElementById('snake-overlay').classList.remove('show');
+  if(snakeGame){clearInterval(snakeGame);snakeGame=null;}
+};
+
+function startSnake(){
+  const canvas=document.getElementById('snake-canvas');
+  const ctx=canvas.getContext('2d');
+  const CELL=20,W=canvas.width/CELL,H=canvas.height/CELL;
+  let snake=[{x:10,y:10}],dir={x:1,y:0},nextDir={x:1,y:0};
+  let food=spawnFood(),score=0,alive=true;
+
+  function spawnFood(){
+    let f;
+    do{f={x:Math.floor(Math.random()*W),y:Math.floor(Math.random()*H)}}
+    while(snake.some(s=>s.x===f.x&&s.y===f.y));
+    return f;
+  }
+
+  function draw(){
+    ctx.fillStyle='#04080f';ctx.fillRect(0,0,canvas.width,canvas.height);
+    // grid
+    ctx.strokeStyle='#0a1628';ctx.lineWidth=0.5;
+    for(let x=0;x<W;x++){ctx.beginPath();ctx.moveTo(x*CELL,0);ctx.lineTo(x*CELL,canvas.height);ctx.stroke();}
+    for(let y=0;y<H;y++){ctx.beginPath();ctx.moveTo(0,y*CELL);ctx.lineTo(canvas.width,y*CELL);ctx.stroke();}
+    // food
+    ctx.fillStyle='#ff6b9d';ctx.shadowBlur=12;ctx.shadowColor='#ff6b9d';
+    ctx.fillRect(food.x*CELL+2,food.y*CELL+2,CELL-4,CELL-4);
+    ctx.shadowBlur=0;
+    // snake
+    snake.forEach((seg,i)=>{
+      const ratio=i/snake.length;
+      const r=Math.floor(0+ratio*123),g=Math.floor(255-ratio*50),b=Math.floor(231-ratio*100);
+      ctx.fillStyle=`rgb(${r},${g},${b})`;
+      if(i===0){ctx.shadowBlur=16;ctx.shadowColor='#00ffe7';}else ctx.shadowBlur=0;
+      ctx.fillRect(seg.x*CELL+1,seg.y*CELL+1,CELL-2,CELL-2);
+    });
+    ctx.shadowBlur=0;
+    if(!alive){
+      ctx.fillStyle='rgba(4,8,15,0.7)';ctx.fillRect(0,0,canvas.width,canvas.height);
+      ctx.fillStyle='#ff6b9d';ctx.font='bold 28px Orbitron,monospace';
+      ctx.textAlign='center';ctx.fillText('GAME OVER',canvas.width/2,canvas.height/2-20);
+      ctx.fillStyle='#00ffe7';ctx.font='14px Share Tech Mono,monospace';
+      ctx.fillText('SCORE: '+score,canvas.width/2,canvas.height/2+14);
+      ctx.fillText('PRESS SPACE TO RESTART',canvas.width/2,canvas.height/2+40);
+    }
+  }
+
+  function step(){
+    if(!alive)return;
+    dir=nextDir;
+    const head={x:(snake[0].x+dir.x+W)%W,y:(snake[0].y+dir.y+H)%H};
+    if(snake.some(s=>s.x===head.x&&s.y===head.y)){
+      alive=false;
+      if(score>snakeBest){snakeBest=score;document.getElementById('snake-best').textContent=snakeBest;}
+      showNotif('💀 Game Over! Рекорд: '+snakeBest);
+      if(score>=20)showAchieve('🐍 SNAKE MASTER: '+score+' очків!');
+      draw();return;
+    }
+    snake.unshift(head);
+    if(head.x===food.x&&head.y===food.y){
+      score++;document.getElementById('snake-score').textContent=score;
+      food=spawnFood();
+      if(score%5===0)showNotif('🐍 '+score+' очків! Швидше!');
+    } else snake.pop();
+    draw();
+  }
+
+  if(snakeGame)clearInterval(snakeGame);
+  snakeGame=setInterval(step,120);
+  draw();
+
+  // Controls
+  document.addEventListener('keydown',function snakeKeys(e){
+    const map={ArrowUp:{x:0,y:-1},ArrowDown:{x:0,y:1},ArrowLeft:{x:-1,y:0},ArrowRight:{x:1,y:0},
+               w:{x:0,y:-1},s:{x:0,y:1},a:{x:-1,y:0},d:{x:1,y:0},' ':'restart'};
+    const cmd=map[e.key];
+    if(!cmd)return;
+    e.preventDefault();
+    if(cmd==='restart'&&!alive){
+      snake=[{x:10,y:10}];dir={x:1,y:0};nextDir={x:1,y:0};
+      food=spawnFood();score=0;alive=true;
+      document.getElementById('snake-score').textContent=0;
+    } else if(cmd!=='restart'){
+      if(cmd.x!==0&&dir.x!==0)return;
+      if(cmd.y!==0&&dir.y!==0)return;
+      nextDir=cmd;
+    }
+    if(!document.getElementById('snake-overlay').classList.contains('show')){
+      document.removeEventListener('keydown',snakeKeys);
+    }
+  });
+}
+
+// ===== SCREENSAVER (5s idle) =====
+let idleTimer,ssActive=false;
+const SS_DELAY=15000;
+function resetIdle(){
+  if(ssActive)return;
+  clearTimeout(idleTimer);
+  idleTimer=setTimeout(activateSS,SS_DELAY);
+}
+['mousemove','keydown','click','scroll','touchstart'].forEach(e=>document.addEventListener(e,resetIdle));
+resetIdle();
+
+function activateSS(){
+  ssActive=true;
+  const ss=document.getElementById('screensaver');
+  ss.classList.add('show');
+  const ssc=document.getElementById('ss-canvas');
+  ssc.width=window.innerWidth;ssc.height=window.innerHeight;
+  const ssx=ssc.getContext('2d');
+  // bouncing ШКМ text
+  let bx=Math.random()*ssc.width,by=150,bvx=(Math.random()*2+1)*(Math.random()>0.5?1:-1);
+  let bvy=1.5,colors2=['#00ffe7','#7b61ff','#ff6b9d','#ffd166'],ci2=0;
+  let ssFrame;
+  function ssDraw(){
+    ssx.fillStyle='rgba(0,0,0,0.08)';ssx.fillRect(0,0,ssc.width,ssc.height);
+    bx+=bvx;by+=bvy;
+    if(bx<80||bx>ssc.width-80){bvx*=-1;ci2=(ci2+1)%colors2.length;}
+    if(by<80||by>ssc.height-80){bvy*=-1;ci2=(ci2+1)%colors2.length;}
+    ssx.font='bold 80px Orbitron,monospace';
+    ssx.fillStyle=colors2[ci2];
+    ssx.shadowBlur=30;ssx.shadowColor=colors2[ci2];
+    ssx.textAlign='center';ssx.fillText('ШКМ',bx,by);
+    ssx.shadowBlur=0;
+    ssFrame=requestAnimationFrame(ssDraw);
+  }
+  ssDraw();
+  function killSS(){
+    ssActive=false;ss.classList.remove('show');
+    cancelAnimationFrame(ssFrame);
+    ssx.clearRect(0,0,ssc.width,ssc.height);
+    resetIdle();
+    ['mousemove','keydown','click'].forEach(ev=>document.removeEventListener(ev,killSS));
+  }
+  setTimeout(()=>{
+    ['mousemove','keydown','click'].forEach(ev=>document.addEventListener(ev,killSS,{once:true}));
+  },500);
+}
+
+// ===== WHISPER HINT — slowly appears =====
+setTimeout(()=>{
+  const w=document.getElementById('whisper');
+  if(w)w.classList.add('visible');
+},8000);
+
+// ===== GLITCH CURSOR MODE: triple-click on cursor itself (navbar logo) =====
+let navLogoClicks=0,navLogoTimer;
+document.querySelector('.nav-logo').addEventListener('click',()=>{
+  navLogoClicks++;
+  clearTimeout(navLogoTimer);
+  navLogoTimer=setTimeout(()=>navLogoClicks=0,800);
+  if(navLogoClicks>=3){
+    navLogoClicks=0;
+    document.body.classList.toggle('glitch-cursor');
+    showNotif(document.body.classList.contains('glitch-cursor')?'👾 GLITCH CURSOR ON!':'👾 GLITCH CURSOR OFF');
+    showAchieve('👾 GLITCH CURSOR UNLOCKED!');
+  }
+});
+
+// ===== DARK SECRET: scroll to very bottom then stay 3s =====
+let atBottomTimer;
+window.addEventListener('scroll',()=>{
+  const nearBottom=window.scrollY+window.innerHeight>=document.body.scrollHeight-10;
+  if(nearBottom){
+    if(!atBottomTimer)atBottomTimer=setTimeout(()=>{
+      openDarkMsg();
+      atBottomTimer=null;
+    },3000);
+  } else {
+    clearTimeout(atBottomTimer);atBottomTimer=null;
+  }
+});
+function openDarkMsg(){
+  document.getElementById('dark-msg').classList.add('show');
+  showNotif('🌑 Ти знайшов темний бік...');
+}
+window.closeDarkMsg=function(){
+  document.getElementById('dark-msg').classList.remove('show');
+  showAchieve('🌑 ТЕМНИЙ БІК ПРОЙДЕНО!');
+  spawnConfetti(30);
+};
+
+// ===== SECRET: HOLD SPACE FOR 2s =====
+let spaceHeld=false,spaceTimer;
+document.addEventListener('keydown',e=>{
+  if(e.code==='Space'&&!spaceHeld&&!document.getElementById('snake-overlay').classList.contains('show')){
+    spaceHeld=true;
+    spaceTimer=setTimeout(()=>{
+      emojiRain();
+      showAchieve('🚀 ДОВГЕ НАТИСКАННЯ ПРОБІЛУ — СЕКРЕТ!');
+    },2000);
+  }
+});
+document.addEventListener('keyup',e=>{
+  if(e.code==='Space'){spaceHeld=false;clearTimeout(spaceTimer);}
+});
+
+// ===== BLOB BACKGROUND (toggle with B key) =====
+let blobOn=false;
+const blobC=document.getElementById('blob-canvas');
+blobC.width=window.innerWidth;blobC.height=window.innerHeight;
+window.addEventListener('resize',()=>{blobC.width=window.innerWidth;blobC.height=window.innerHeight;});
+const blobX=blobC.getContext('2d');
+const blobs=Array.from({length:6},(_,i)=>({
+  x:Math.random()*window.innerWidth,y:Math.random()*window.innerHeight,
+  vx:(Math.random()-0.5)*0.8,vy:(Math.random()-0.5)*0.8,
+  r:120+Math.random()*100,
+  c:['#00ffe7','#7b61ff','#ff6b9d','#ffd166','#06d6a0','#ff8c00'][i]
+}));
+
+function drawBlobs(){
+  if(!blobOn){requestAnimationFrame(drawBlobs);return;}
+  blobX.clearRect(0,0,blobC.width,blobC.height);
+  blobs.forEach(b=>{
+    b.x+=b.vx;b.y+=b.vy;
+    if(b.x<-b.r||b.x>blobC.width+b.r)b.vx*=-1;
+    if(b.y<-b.r||b.y>blobC.height+b.r)b.vy*=-1;
+    const g=blobX.createRadialGradient(b.x,b.y,0,b.x,b.y,b.r);
+    g.addColorStop(0,b.c+'88');g.addColorStop(1,b.c+'00');
+    blobX.beginPath();blobX.arc(b.x,b.y,b.r,0,Math.PI*2);
+    blobX.fillStyle=g;blobX.fill();
+  });
+  requestAnimationFrame(drawBlobs);
+}
+drawBlobs();
+
+document.addEventListener('keydown',e=>{
+  if(e.key.toLowerCase()==='b'&&!document.getElementById('snake-overlay').classList.contains('show')){
+    blobOn=!blobOn;
+    blobC.classList.toggle('show',blobOn);
+    showNotif(blobOn?'🫧 BLOB MODE ON!':'🫧 BLOB MODE OFF');
+    if(blobOn)showAchieve('🫧 BLOB MODE — ПСИХОДЕЛІКА!');
+  }
+});
+
+
+// ===== SECRETS GUIDE =====
+const allSecrets=[
+  {icon:'🎮',name:'Konami Code',how:'↑ ↑ ↓ ↓ ← → ← → B A',desc:'Класичний чит-код з 1986 року. Відкриває велике святкове оверлей з конфеті та феєрверком.'},
+  {icon:'🔑',name:'Секретний код "ШКМ"',how:'Введи "шкм" на клавіатурі',desc:'Просто набери три букви на клавіатурі будь-де на сторінці — і станеться магія.'},
+  {icon:'🔲',name:'Секретний кут',how:'3× клік у лівий нижній кут екрана',desc:'Невидима зона в кутку. Три кліки — і відкривається Hackerman Mode із зеленою матрицею.'},
+  {icon:'💥',name:'Подвійний клік на логотип',how:'2× клік на "ШКМ" у hero',desc:'Супер-феєрверк по всьому небу плюс нян-кет одночасно. Вибухова комбінація.'},
+  {icon:'🎯',name:"П'ять кліків на логотип",how:'5× клік на "ШКМ" у hero',desc:'Автоматично вмикає RAVE MODE на 4 секунди. Хто витримає?'},
+  {icon:'👾',name:'Glitch Cursor',how:'3× швидко клік на "ШКМ" у навбарі',desc:'Курсор починає глітчити і змінювати кольори. Вимикається тим самим способом.'},
+  {icon:'🌑',name:'Темний бік',how:'Гортай до самого низу і чекай 3 секунди',desc:'Залишся на дні сторінки достатньо довго — і відкриється таємне послання з темного боку.'},
+  {icon:'🐍',name:'Snake гра',how:'Кнопка "ЗІГРАЙ В SNAKE" або клік на footer',desc:'Повноцінна змійка з рекордами, WASD або стрілками. Збий 20+ очків для досягнення.'},
+  {icon:'📺',name:'Скрінсейвер',how:'Не рухай мишу 15 секунд',desc:'Запускається ретро-скрінсейвер з боунсінг логотипом ШКМ. Як DVD-програвач 2005 року.'},
+  {icon:'🫧',name:'Blob Mode',how:'Натисни клавішу B',desc:'Вмикає психоделічний режим із плаваючими кольоровими кулями на фоні. Стиль лава-лампи.'},
+  {icon:'🚀',name:'Довге пробіл',how:'Затримай пробіл 2 секунди',desc:'Запускає emoji-дощ з неба. Те саме, що кнопка EMOJI! — але через клавіатуру.'},
+  {icon:'🎉',name:'RAVE MODE',how:'Кнопка збоку або 5× клік на логотип',desc:'Весь сайт починає циклічно змінювати кольори. Для справжніх любителів вечірок.'},
+  {icon:'🐱',name:'Нян-кет',how:'Кнопка "НЯН!" або подвійний клік логотипу',desc:'Котик летить через весь екран із веселковим слідом. Незамінне.'},
+  {icon:'🏆',name:'Система досягнень',how:'Клікай! При 1, 10, 25, 50, 100 кліках',desc:'Банери вилітають у верхній частині екрана при досягненні порогів кліків. Колекціонуй всі!'},
+];
+
+window.openSecrets=function(){
+  const modal=document.getElementById('secrets-modal');
+  const list=document.getElementById('secrets-list');
+  list.innerHTML='';
+  allSecrets.forEach((s,i)=>{
+    const item=document.createElement('div');
+    item.className='secret-item';
+    item.style.animationDelay=(i*40)+'ms';
+    item.innerHTML=`<div class="secret-icon">${s.icon}</div><div class="secret-info"><div class="secret-name">${s.name}</div><div class="secret-how">${s.how}</div><div class="secret-desc">${s.desc}</div></div>`;
+    list.appendChild(item);
+  });
+  modal.style.display='block';
+  document.body.style.overflow='hidden';
+};
+window.closeSecrets=function(){
+  document.getElementById('secrets-modal').style.display='none';
+  document.body.style.overflow='';
+};
 </script>
 </body>
 </html>
